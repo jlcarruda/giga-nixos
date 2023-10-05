@@ -6,6 +6,7 @@
 
 let
   userName="giga"; 
+  xOutput="Virtual1";
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -38,16 +39,34 @@ in {
   # };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
 
+  services = {
+	tumbler.enable = true;
+	xserver = {
+		enable = true;
+		layout = "us";
+		displayManager = {
+			lightdm.enable = true;
+			setupCommands = ''
+			${pkgs.xorg.xrandr}/bin/xrandr --output ${xOutput} --mode 1920x1080
+			'';
+		};
+		windowManager.qtile.enable = true;
+		desktopManager = {
+			xterm.enable = false;
+			xfce = {
+				enable = true;
+				noDesktop = true;
+				enableXfwm = false;
+			};
+		};
+	};
+	picom = {
+		enable = true;
+	};
+  }; 
 
-  
-
-  # Configure keymap in X11
-  services.xserver.layout = "us";
-  services.xserver.windowManager.qtile.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  # services.xserver.xkbOptions = "eurosign:e,caps:escape";
+ # services.xserver.xkbOptions = "eurosign:e,caps:escape";
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -79,37 +98,48 @@ in {
 	"video"
 	"docker"
 	"networkmanager" 
-    ];
+   ];
    packages = with pkgs; [
-	firefox
-	tree
-	nmap
-	tmux
+#	firefox
+#	tree
+#	nmap
+#	tmux
 	zsh
-	docker	
-    ];
-  };
+#	docker	
+   ];
+ };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-  ];
+  environment = {
+	systemPackages = with pkgs; [
+    		vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+		wget
+  	];
+  };
 
-  environment.shells = with pkgs; [ bashInteractive zsh ]; 
-  programs.zsh.enable = true;
-  programs.zsh.ohMyZsh = {
+  programs = {
+	thunar = {
+		plugins = with pkgs.xfce; [
+			thunar-archive-plugin
+			thunar-volman
+		];	
+	};
+	zsh = {
+		enable = true;
+		ohMyZsh = {
    			enable = true;
     			plugins = ["git" "python" "docker"];
     			theme = "agnoster";
   		};
-  programs.zsh.shellAliases = {
+		shellAliases = {
 			ll = "ls -l";
-			rebuild = "sudo nixos-rebuild switch";
-			
+			rebuild = "sudo nixos-rebuild switch";	
 		};
-  home-manager.users.giga = { pkgs, ... }: {
+  	};
+  };
+
+  home-manager.users.${userName} = { pkgs, ... }: {
 	fonts.fontconfig.enable = true;
 	home.packages = with pkgs; [
 		(nerdfonts.override { fonts =[ "FiraCode" "DroidSansMono" ]; })
@@ -121,17 +151,15 @@ in {
 		firefox
 		alacritty
 		git
+		flameshot
+		gcc
+		dunst
+		nodejs
+		pavucontrol
+		neovim		
+		picom
 	];
 	home.stateVersion = "23.05";
-	programs.zsh = {
-		enable = true;
-		shellAliases = {
-			ll = "ls -l";
-			rebuild = "sudo nixos-rebuild switch";
-			
-		};
-	
-	};
   };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
