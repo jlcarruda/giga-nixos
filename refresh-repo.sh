@@ -3,5 +3,8 @@
 rm -rf ./home-manager
 rm -rf ./nixos
 
-cp -r /home/giga/.config/home-manager .
+mkdir -p .config
+
+cp -r /home/giga/.config/home-manager ./.config
+cp -r /home/giga/.config/qtile ./.config/
 cp -r /etc/nixos .

@@ -2,16 +2,19 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   userName="giga"; 
   xOutput="Virtual1";
+  nix-gaming = import (builtins.fetchTarball "https://github.com/fufexan/nix-gaming/archive/master.tar.gz");
 in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
+      ./cachix.nix
+
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -100,12 +103,7 @@ in {
 	"networkmanager" 
    ];
    packages = with pkgs; [
-#	firefox
-#	tree
-#	nmap
-#	tmux
 	zsh
-#	docker	
    ];
  };
 
@@ -115,7 +113,8 @@ in {
 	systemPackages = with pkgs; [
     		vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 		wget
-  	];
+		nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
+	];
   };
 
   programs = {
@@ -129,7 +128,7 @@ in {
 		enable = true;
 		ohMyZsh = {
    			enable = true;
-    			plugins = ["git" "python" "docker"];
+    			plugins = ["git" "python" "docker" "shellfirm"];
     			theme = "agnoster";
   		};
 		shellAliases = {
@@ -156,10 +155,36 @@ in {
 		dunst
 		nodejs
 		pavucontrol
-		neovim		
+		neovim
 		picom
+		steam
+		gobuster
+		go
 	];
 	home.stateVersion = "23.05";
+  	
+#	nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam" "vscode" ];
+	nixpkgs.config.allowUnfree = true;
+
+	services.picom.enable = true;	
+	programs = {
+		vscode = {
+			enable = true;
+			enableExtensionUpdateCheck = true;
+			extensions = with pkgs.vscode-extensions; [
+				dracula-theme.theme-dracula
+				vscodevim.vim
+				yzhang.markdown-all-in-one
+				bbenoist.nix
+				jdinhlife.gruvbox
+				ms-azuretools.vscode-docker
+				dbaeumer.vscode-eslint
+			];
+		};
+#		steam = {
+#			enable = true;
+#		};
+	};
   };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
