@@ -1,10 +1,10 @@
 #!/bin/sh
 
-rm -rf ./home-manager
-rm -rf ./nixos
+cp -r ./.config ./.backup
+cp -r ./nixos ./.backup
 
-mkdir -p .config
+sudo ./refresh-nixos-on-repo.sh
 
 cp -r /home/giga/.config/home-manager ./.config
-cp -r /home/giga/.config/qtile ./.config/
-cp -r /etc/nixos .
+cp -r /home/giga/.config/qtile ./.config
+chown -R giga:users ./.config

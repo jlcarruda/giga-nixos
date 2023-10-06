@@ -96,7 +96,7 @@ in {
     home = "/home/${userName}";
     extraGroups = [ 
 	"wheel"
-        "net"
+    "net"
 	"audio"
 	"video"
 	"docker"
@@ -111,9 +111,11 @@ in {
   # $ nix search wget
   environment = {
 	systemPackages = with pkgs; [
-    		vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    	vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 		wget
 		nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
+		bc
+		wmctrl	
 	];
   };
 
@@ -128,7 +130,7 @@ in {
 		enable = true;
 		ohMyZsh = {
    			enable = true;
-    			plugins = ["git" "python" "docker" "shellfirm"];
+    			plugins = ["git" "python" "docker"];
     			theme = "agnoster";
   		};
 		shellAliases = {
@@ -140,8 +142,12 @@ in {
 
   home-manager.users.${userName} = { pkgs, ... }: {
 	fonts.fontconfig.enable = true;
+	nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam" "vscode" "linuxKernel" ];
+	nixpkgs.config.allowUnfree = true;
+	nixpkgs.config.allowBroken = true;
 	home.packages = with pkgs; [
 		(nerdfonts.override { fonts =[ "FiraCode" "DroidSansMono" ]; })
+		fira-mono
 		docker
 		tmux
 		nmap
@@ -160,12 +166,12 @@ in {
 		steam
 		gobuster
 		go
+		aircrack-ng
+		eww
+		nitrogen
 	];
 	home.stateVersion = "23.05";
   	
-#	nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam" "vscode" ];
-	nixpkgs.config.allowUnfree = true;
-
 	services.picom.enable = true;	
 	programs = {
 		vscode = {
@@ -173,12 +179,13 @@ in {
 			enableExtensionUpdateCheck = true;
 			extensions = with pkgs.vscode-extensions; [
 				dracula-theme.theme-dracula
-				vscodevim.vim
+				#vscodevim.vim
 				yzhang.markdown-all-in-one
 				bbenoist.nix
 				jdinhlife.gruvbox
 				ms-azuretools.vscode-docker
 				dbaeumer.vscode-eslint
+				ms-python.python
 			];
 		};
 #		steam = {
