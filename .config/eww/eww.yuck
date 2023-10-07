@@ -1,9 +1,9 @@
 ;;;; COMMANDS ;;;;
 
 (defvar launcher_cmd  "rofi -show drun -hover-select -me-select-entry '' -me-accept-entry 'MousePrimary' &")
-(defvar lamp_cmd      "./scripts/homeassistant toggle &")
+; (defvar lamp_cmd      "./scripts/homeassistant toggle &")
 (defvar bluetooth_cmd "blueberry &")
-(defvar vpn_cmd       "./scripts/vpn toggle &")
+; (defvar vpn_cmd       "./scripts/vpn toggle &")
 (defvar volume_cmd    "pavucontrol &")
 (defvar power_cmd     "./scripts/powermenu &")
 
@@ -41,7 +41,9 @@
 	(box :orientation "v"
 		:space-evenly false
 		:spacing "8"
-		(homeassistant)(capture)(systemtray)(powermenu)))
+		(systemtray)(powermenu)))
+			; (capture)
+			; (homeassistant)
 
 ;;;; TOP ;;;;
 
@@ -111,40 +113,40 @@
 
 ;;;; BOTTOM (sus) ;;;;
 
-;; homeassistant
-(defwidget homeassistant []
-	(box :class "metric"
-		:orientation "v"
-		:space-evenly false
-		:spacing "0"
-		(light)))
+; ;; homeassistant
+; (defwidget homeassistant []
+; 	(box :class "metric"
+; 		:orientation "v"
+; 		:space-evenly false
+; 		:spacing "0"
+; 		(light)))
 
-(defwidget light []
-	(button :class "light-icon ${light_power == "on" ? "light-on" : "light-off"}"
-		:tooltip "Toggle light"
-		:onclick lamp_cmd
-		""))
+; (defwidget light []
+; 	(button :class "light-icon ${light_power == "on" ? "light-on" : "light-off"}"
+; 		:tooltip "Toggle light"
+; 		:onclick lamp_cmd
+; 		""))
 
-(defpoll light_power :interval "1s" "./scripts/homeassistant state")
+; (defpoll light_power :interval "1s" "./scripts/homeassistant state")
 
 
 ;; capture tools
-(defwidget capture []
-	(box :class "metric"
-		:orientation "v"
-		:space-evenly false
-		:spacing "0"
-		:visible "${obs-status == 0 ? "false" : "true"}"
-		(obs)))
+; (defwidget capture []
+; 	(box :class "metric"
+; 		:orientation "v"
+; 		:space-evenly false
+; 		:spacing "0"
+; 		:visible "${obs-status == 0 ? "false" : "true"}"
+; 		(obs)))
 
 ;; obs
 ;; obs usually displays 2 processes when recording and 1 when just running in the background 
-(defwidget obs []
-	(button :class "obs-icon ${obs-status == 2 ? "obs-recording" : "obs-running"}"
-		:tooltip "OBS"
-		""))
+; (defwidget obs []
+; 	(button :class "obs-icon ${obs-status == 2 ? "obs-recording" : "obs-running"}"
+; 		:tooltip "OBS"
+; 		""))
 
-(defpoll obs-status :interval "1s" "pgrep obs | wc -l")
+; (defpoll obs-status :interval "1s" "pgrep obs | wc -l")
 
 ;; systemtray
 (defwidget systemtray []
@@ -152,7 +154,8 @@
 		:orientation "v"
 		:space-evenly false
 		:spacing "0"
-		(memory)(bluetooth)(vpn)(mic)(volume)))
+		(memory)(bluetooth)(mic)(volume)))
+			; (vpn)
 
 ;; memory
 (defwidget memory []
@@ -173,13 +176,13 @@
 (defpoll bluetooth_status :interval "1s" "./scripts/bluetooth")
 
 ;; vpn
-(defwidget vpn []
-	(button :class "vpn-icon ${vpn_status == "1" ? "vpn-on" : "vpn-off"}"
-		:onclick vpn_cmd
-		:tooltip "VPN"
-		""))
+; (defwidget vpn []
+; 	(button :class "vpn-icon ${vpn_status == "1" ? "vpn-on" : "vpn-off"}"
+; 		:onclick vpn_cmd
+; 		:tooltip "VPN"
+; 		""))
 
-(defpoll vpn_status :interval "1s" "./scripts/vpn status")
+; (defpoll vpn_status :interval "1s" "./scripts/vpn status")
 
 ;; mic
 (defwidget mic []

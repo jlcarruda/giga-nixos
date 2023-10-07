@@ -9,7 +9,7 @@ fi
 
 mkdir -p "$backup_dir"
 
-configs=("qtile" "home-manager" "alacritty" "eww")
+configs=("qtile" "home-manager" "alacritty" "eww" "rofi")
 
 for dir in "${configs[@]}"; do
     if [ -d "$config_dir/$dir" ]; then

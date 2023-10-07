@@ -95,6 +95,7 @@ qtileControl = [
 # ------------------------------------------``
 launchers = [
     EzKey("A-<Space>", lazy.spawn(LAUNCHER)),
+    EzKey("M-r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
 scrcap = [

@@ -48,6 +48,7 @@ in {
 	xserver = {
 		enable = true;
 		layout = "us";
+		gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 		displayManager = {
 			lightdm.enable = true;
 			setupCommands = ''
@@ -115,7 +116,8 @@ in {
 		wget
 		nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
 		bc
-		wmctrl	
+		wmctrl
+		rustc
 	];
   };
 
@@ -141,12 +143,19 @@ in {
   };
 
   home-manager.users.${userName} = { pkgs, ... }: {
-	fonts.fontconfig.enable = true;
+	fonts = {
+		# packages = with pkgs; [
+		# ];
+		fontconfig.enable = true;
+	};
 	nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam" "vscode" "linuxKernel" ];
 	nixpkgs.config.allowUnfree = true;
 	nixpkgs.config.allowBroken = true;
 	home.packages = with pkgs; [
 		(nerdfonts.override { fonts =[ "FiraCode" "DroidSansMono" ]; })
+		jetbrains-mono
+		fira-code-symbols
+		font-awesome
 		fira-mono
 		docker
 		tmux
@@ -169,6 +178,7 @@ in {
 		aircrack-ng
 		eww
 		nitrogen
+		rofi
 	];
 	home.stateVersion = "23.05";
   	
