@@ -142,6 +142,8 @@ in {
 		};
   	};
   };
+	
+	fonts.fontDir.enable = true;
 
   home-manager.users.${userName} = { pkgs, ... }: {
 	fonts = {
@@ -153,7 +155,7 @@ in {
 	nixpkgs.config.allowUnfree = true;
 	nixpkgs.config.allowBroken = true;
 	home.packages = with pkgs; [
-		(nerdfonts.override { fonts =[ "FiraCode" "DroidSansMono" ]; })
+		(nerdfonts.override { fonts =[ "FiraCode" "DroidSansMono" "Hack" "AnonymousPro" ]; })
 		jetbrains-mono
 		fira-code-symbols
 		font-awesome
