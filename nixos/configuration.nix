@@ -200,9 +200,6 @@ in {
 				ms-python.python
 			];
 		};
-#		steam = {
-#			enable = true;
-#		};
 	};
   };
   # Some programs need SUID wrappers, can be configured further or are
