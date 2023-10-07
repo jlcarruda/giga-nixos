@@ -117,6 +117,7 @@ in {
 		nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
 		bc
 		wmctrl
+		ripgrep
 		rustc
 	];
   };
@@ -179,6 +180,7 @@ in {
 		eww
 		nitrogen
 		rofi
+		vimPlugins.vim-parinfer
 	];
 	home.stateVersion = "23.05";
   	
