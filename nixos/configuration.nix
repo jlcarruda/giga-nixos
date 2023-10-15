@@ -50,7 +50,15 @@ in {
 		layout = "us";
 		gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 		displayManager = {
-			lightdm.enable = true;
+			lightdm = {
+				enable = true;
+				greeters = {
+					slick = {
+						enable = true;
+						draw-user-backgrounds = true;
+					};
+				};
+			};
 			setupCommands = ''
 			${pkgs.xorg.xrandr}/bin/xrandr --output ${xOutput} --mode 1920x1080
 			'';
