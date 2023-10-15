@@ -19,7 +19,7 @@ cp "$nixos_dir/configuration.nix" "$nixos_dir/.backup"
 cp "$nixos_dir/hardware-configuration.nix" "$nixos_dir/.backup"
 
 # inject
-# cp -r ./nixos/* "$nixos_dir"
-cp -r ./nixos/configuration.nix "$nixos_dir"
+cp -r ./nixos/* "$nixos_dir"
+# cp -r ./nixos/configuration.nix "$nixos_dir"
 
 chown -R root:root "$nixos_dir"
