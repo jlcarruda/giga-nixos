@@ -96,30 +96,31 @@ in {
     shell = pkgs.zsh;
     home = "/home/${userName}";
     extraGroups = [ 
-	"wheel"
-    "net"
-	"audio"
-	"video"
-	"docker"
-	"networkmanager" 
-   ];
-   packages = with pkgs; [
-	zsh
-   ];
- };
+			"wheel"
+    	"net"
+			"audio"
+			"video"
+			"docker"
+			"networkmanager"
+   	];
+  	packages = with pkgs; [
+			zsh
+   	];
+ 	};
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
 	systemPackages = with pkgs; [
     	vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-		wget
-		nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
-		bc
-		wmctrl
-		ripgrep
-		rustc
-	];
+			wget
+			nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
+			bc
+			wmctrl
+			ripgrep
+			rustc
+			wirelesstools
+		];
   };
 
   programs = {
