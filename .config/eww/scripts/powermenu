@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 rofi_command="rofi -theme ~/.config/rofi/power.rasi -hover-select"
-uptime=$(uptime -p | sed -e 's/up //g')
+uptime=$(uptime | sed -e 's/up //g')
 
 # Options
 shutdown="Shutdown"

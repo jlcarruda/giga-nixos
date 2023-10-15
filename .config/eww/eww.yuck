@@ -113,23 +113,6 @@
 
 ;;;; BOTTOM (sus) ;;;;
 
-; ;; homeassistant
-; (defwidget homeassistant []
-; 	(box :class "metric"
-; 		:orientation "v"
-; 		:space-evenly false
-; 		:spacing "0"
-; 		(light)))
-
-; (defwidget light []
-; 	(button :class "light-icon ${light_power == "on" ? "light-on" : "light-off"}"
-; 		:tooltip "Toggle light"
-; 		:onclick lamp_cmd
-; 		""))
-
-; (defpoll light_power :interval "1s" "./scripts/homeassistant state")
-
-
 ;; capture tools
 ; (defwidget capture []
 ; 	(box :class "metric"
@@ -214,7 +197,7 @@
 				:onclick volume_cmd 
 				{current_volume == 0 ? "" : ""}))))
 
-(defpoll current_volume :interval "1s" "amixer -D pulse sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }' | tr -d '%'")
+(defpoll current_volume :interval "1s" "amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }' | tr -d '%'")
 (defvar volume_reveal false)
 
 ;; powermenu
