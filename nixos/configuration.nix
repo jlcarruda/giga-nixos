@@ -209,6 +209,7 @@ in {
 				ms-azuretools.vscode-docker
 				dbaeumer.vscode-eslint
 				ms-python.python
+        eww.yuck
 			];
 		};
 	};
