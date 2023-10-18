@@ -25,7 +25,8 @@ else
   sudo ./inject-nixos-config.sh -o $only
 fi
 
-# Inject nixos config
+# inject dotfiles on home
+cp "./dotfiles/.zshrc" "$HOME"
 
 # setup config
 ./setup-config.sh
