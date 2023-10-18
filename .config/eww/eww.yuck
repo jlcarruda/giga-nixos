@@ -51,7 +51,7 @@
 (defwidget launcher []
 	(button :class "launcher-icon metric"
 		:tooltip "Rofi launcher"
-		:onclick launcher_cmd  ""))
+		:onclick launcher_cmd  ""))
 
 ;; music
 (defwidget music []
@@ -73,13 +73,13 @@
 	(button :class "skip-icon"
 		:onclick "playerctl next -i firefox"
 		:tooltip "Skip track"
-		""))
+		"󰒭"))
 
 (defwidget music-prev []
 	(button :class "prev-icon"
 		:onclick "playerctl previous -i firefox"
 		:tooltip "Previous track"
-		""))
+		"󰒮"))
 
 (defwidget workspaces [] (literal :content "${workspace_data}"))
 (defvar workspace_data "")
@@ -136,16 +136,23 @@
 	(box :class "metric"
 		:orientation "v"
 		:space-evenly false
-		:spacing "0"
+		:spacing "1"
 		(memory)(bluetooth)(mic)(volume)))
 			; (vpn)
 
 ;; memory
 (defwidget memory []
-	(button :class "memory-icon"
+	(box :class "memory-icon ${memory_percent > 85 ? "alert" : ""}"
 		:tooltip "Memory used: ${memory_percent}%"
-		:visible "${memory_percent > 85 ? "true" : "false"}"
-		""))
+	; :visible "${memory_percent > 85 ? "true" : "false"}"
+	(scale :class "memory-gauge"
+		:tooltip "Memory used: ${memory_percent}%"
+		:value memory_percent
+		:orientation "v"
+		:flipped true
+		:max 100
+		:min 1)
+		"󰍛"))
 
 (defpoll memory_percent :interval "1s" "free -m | grep Mem | awk '{print ($3/$2)*100}' | cut -d'.' -f1")
 
@@ -154,7 +161,7 @@
 	(button :class "bluetooth-icon ${bluetooth_status == "1" ? "bluetooth-on" : bluetooth_status == "2" ? "bluetooth-connected" : "bluetooth-off"}"
 		:onclick bluetooth_cmd
 		:tooltip "Bluetooth"
-		""))
+		""))
 
 (defpoll bluetooth_status :interval "1s" "./scripts/bluetooth")
 
@@ -172,7 +179,7 @@
 	(button :class "mic-icon ${mic_status == "no" ? "mic-on" : "mic-off"}"
 		:onclick "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
 		:tooltip "Microphone"
-		""))
+		"${mic_status == "no" ? "": ""}"))
 
 (defpoll mic_status :interval "1s" "pactl list sources | grep -m 2 Mute | tail -n 1 | awk '{print $2}'")
 
@@ -204,7 +211,7 @@
 (defwidget powermenu []
 	(button :class "poweroff-icon metric"
 		:onclick power_cmd
-		""))
+		""))
 
 ;;;; WINDOWS ;;;;
 

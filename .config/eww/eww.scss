@@ -60,7 +60,7 @@ scale trough {
 
 // icons
 @mixin icon {
-	padding: 9px 6px;
+	padding: 6px 6px;
 
 	font-family: $icon-font;
 	font-size: $icon-size;
@@ -75,8 +75,7 @@ scale trough {
 //
 
 // launcher
-// .launcher-icon {
-.fa-rocket {
+.launcher-icon {
 	padding: 6px 6px 6px 4px;
 
 	color: $bg;
@@ -228,15 +227,20 @@ scale trough {
 	@include icon;
 	padding: 9px 6px 9px 4px;
 
-	background-color: $red;
-	color: $bg;
-	border-left: 2px solid $red;
+	background-color: $black;
+	color: $white;
+	// border-left: 2px solid $red
 	border-radius: $radius;
 
-	&:hover {
-		color: $red;
-		background-color: $black;
-	}
+	// &:hover {
+	// 	color: $red;
+	// 	background-color: $black;
+	// }
+}
+
+.alert {
+	background-color: $red;
+	color: $black;
 }
 
 .light-icon {
@@ -309,6 +313,11 @@ scale trough {
 	}
 }
 .volume-slider trough highlight {
+	background-color: $green;
+	border-radius: $radius;
+}
+
+.memory-gauge trough highlight {
 	background-color: $green;
 	border-radius: $radius;
 }
