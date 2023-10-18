@@ -11,7 +11,7 @@ while getopts "ho:" opt; do
 done
 
 if [ -z "$only" ]; then
-  $only='all'
+  only='all'
 fi
 
 if [[ $EUID ]] >0; then
