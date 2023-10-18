@@ -142,10 +142,9 @@
 
 ;; memory
 (defwidget memory []
-	(box :class "memory-icon ${memory_percent > 85 ? "alert" : ""}"
+	(box :class "memory-icon"
 		:tooltip "Memory used: ${memory_percent}%"
-	; :visible "${memory_percent > 85 ? "true" : "false"}"
-	(scale :class "memory-gauge"
+	(scale :class "memory-gauge${memory_percent > 80 ? "-alert" : ""}"
 		:tooltip "Memory used: ${memory_percent}%"
 		:value memory_percent
 		:orientation "v"

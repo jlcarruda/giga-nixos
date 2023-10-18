@@ -223,6 +223,7 @@ scale trough {
 	}
 }
 
+
 .memory-icon {
 	@include icon;
 	padding: 9px 6px 9px 4px;
@@ -236,11 +237,6 @@ scale trough {
 	// 	color: $red;
 	// 	background-color: $black;
 	// }
-}
-
-.alert {
-	background-color: $red;
-	color: $black;
 }
 
 .light-icon {
@@ -317,9 +313,13 @@ scale trough {
 	border-radius: $radius;
 }
 
-.memory-gauge trough highlight {
+.memory-gauge highlight {
 	background-color: $green;
 	border-radius: $radius;
+}
+
+.memory-gauge-alert trough highlight {
+	background-color: $red;
 }
 
 .poweroff-icon {
