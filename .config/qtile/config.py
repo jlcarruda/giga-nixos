@@ -8,7 +8,23 @@ import modules.autostart
 
 mod = "mod4"
 
-groups = [Group(i) for i in "123456789"]
+# groups = [Group(i) for i in "123456789"]
+groups = []
+group_names = ["Escape","1","2","3","4","5","6","7","8","9"]
+group_layouts=["monadtall", "monadtall", "monadtall", "monadtall","monadtall", "monadtall", "monadtall","monadwide", "monadtall", "monadtall"]
+group_labels=["零","一","二","三","四","五","六","七","八","九"]
+
+main_font = "Fira Code Medium" # Font in use for the entire system
+awesome_font = "Font Awesome 6 Pro" # Font for the icons
+
+for i in range(len(group_names)):
+    groups.append(
+        Group(
+            name=group_names[i],
+            layout=group_layouts[i].lower(),
+            label=group_labels[i],
+        )
+    )
 
 for i in groups:
     keys.extend(
@@ -51,7 +67,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="Fira Code",
+    font=main_font,
     fontsize=12,
     padding=3,
 )
@@ -59,30 +75,32 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        # top=bar.Bar(
-        #     [
-        #         widget.CurrentLayout(),
-        #         widget.GroupBox(),
-        #         widget.Prompt(),
-        #         widget.WindowName(),
-        #         widget.Chord(
-        #             chords_colors={
-        #                 "launch": ("#ff0000", "#ffffff"),
-        #             },
-        #             name_transform=lambda name: name.upper(),
-        #         ),
-        #         widget.TextBox("default config", name="default"),
-        #         widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-        #         # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-        #         # widget.StatusNotifier(),
-        #         widget.Systray(),
-        #         widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-        #         widget.QuickExit(),
-        #     ],
-        #     24,
-        #     # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-        #     # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        # ),
+        top=bar.Bar(
+            [
+                widget.CurrentLayout(),
+                widget.GroupBox(
+                    font=awesome_font
+                ),
+                widget.Prompt(),
+                widget.WindowName(),
+                widget.Chord(
+                    chords_colors={
+                        "launch": ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                widget.TextBox("default config", name="default"),
+                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+                # widget.StatusNotifier(),
+                widget.Systray(),
+                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.QuickExit(),
+            ],
+            24,
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+        ),
     ),
 ]
 

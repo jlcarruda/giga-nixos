@@ -14,11 +14,6 @@ if [ -z "$only" ]; then
   only='all'
 fi
 
-if [[ $EUID ]] >0; then
-  echo "Please run as SUDO for injecting new nixos config. Aborting..."
-  exit 1
-fi
-
 nixos_dir="/etc/nixos"
 
 if [ -d "$nixos_dir/.backup" ]; then
