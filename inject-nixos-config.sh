@@ -57,4 +57,6 @@ _inject_hardware() {
   cp -r ./nixos/hardware-configuration.nix "$nixos_dir"
 }
 
+inject
+
 chown -R root:root "$nixos_dir"
