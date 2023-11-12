@@ -197,6 +197,121 @@ in {
   	
 	services.picom.enable = true;	
 	programs = {
+		tmux = {
+			enable = true;
+			clock24 = true;
+			shortcut = "a";
+			baseIndex = 1;
+			escapeTime = 0;
+			plugins = with pkgs; [
+				tmuxPlugins.better-mouse-mode
+			];
+			extraConfig = ''
+			set-option -sa terminal-overrides ",xterm*:Tc"
+			########## Common configs ############
+			# unbind C-b
+			# set -g prefix C-a
+			# bind C-a send-prefix
+
+			setw -g mode-keys vi
+			setw -g mouse on
+			setw -g monitor-activity on
+
+			set -g base-index 1
+			set-window-option -g automatic-rename on
+			set-option -g set-titles on
+
+			set -g default-terminal screen-256color
+			set -g status-keys vi
+			set -g history-limit 10000
+			set -sg escape-time 0
+
+			########### Keybinds ################
+
+			bind r source-file ~/.tmux.conf \; display ".tmux.conf reloaded!"
+
+			# Open window
+			bind N new-window
+			bind -n C-S-n new-window
+			bind y setw synchronize-panes
+
+			# Use Alt-arrow keys without prefix key to switch panes
+			bind -n M-Left select-pane -L
+			bind -n M-Right select-pane -R
+			bind -n M-Up select-pane -U
+			bind -n M-Down select-pane -D
+
+			# Ctrl-Shift-x without prefix to close pane
+			#bind -n C-x kill-pane
+			#bind -n C-S-x kill-pane
+			bind -n M-x kill-pane
+
+			bind -n M-d split-pane -h
+			bind -n M-e split-pane -v
+
+			# Shift Arrow to switch windows
+			bind -n S-Left previous-window
+			bind -n S-Right next-window
+
+			bind h select-pane -L
+			bind j select-pane -D
+			bind k select-pane -U
+			bind l select-pane -R
+
+			bind -n M-\\ split-pane -h
+			bind -n M-- split-pane -v
+
+			bind -n C-M-n new-window
+			bind C-n new-window
+
+			## Vi copy override
+			unbind [
+			bind Escape copy-mode
+			#bind -T vi-copy y copy-pipe 'xclip -in -selection clipboard'
+
+			#unbind p
+			#bind p paste-buffer
+			# Copy buffer to clipboard
+			#bind C-c run-shell -b "tmux save-buffer - | xclip -i -sel clipboard"
+			#bind C-v run-shel -b "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
+
+			is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?lvim?x?)(diff)?$'"
+			bind-key -n M-Left  if-shell  "$is_vim"  "send-keys M-Left"  "select-pane -L"
+			bind-key -n M-Down   if-shell  "$is_vim"  "send-keys M-Down"   "select-pane -D"
+			bind-key -n M-Up  if-shell  "$is_vim"  "send-keys M-Up"  "select-pane -U"
+			bind-key -n M-Right   if-shell  "$is_vim"  "send-keys M-Right"   "select-pane -R"
+			#bind-key -n C-\   if-shell  "$is_vim"  "send-keys C-\\"  "select-pane -l"
+
+			#THEME
+			set -g status-bg black
+			set -g status-fg white
+			set -g status-interval 60
+			set -g status-left-length 30
+			#set -g status-left '#[fg=green](#S) #(whoami) #(curl "wttr.in/?format=3")'
+			set -g status-right '#[fg=yellow]#(cut -d " " -f 1-3 /proc/loadavg)#[default] #[fg=white]%H:%M#[default]'
+
+			# Floaterm bindings
+			# bind-key -n T if-shell "$is_vim" "send-keys T"
+
+			# TPM plugin
+			set -g @plugin 'tmux-plugins/tmp'
+
+			# Plugins list
+			#set -g @plugin 'tmux-plugins/tmux-ressurect'
+			#set -g @plugin 'tmux-plugins/tmux-continuum'
+			#set -g @plugin 'christoomey/vim-tmux-navigator'
+			#set -g @plugin 'jimeh/tmux-themepack'
+			#set -g @themepack 'powerline/default/cyan'
+			#set -g @ressurect-capture-pane-contents 'on'
+			#set -g @continuum-resote 'on'
+			set -g @plugin 'tmux-plugins/tmux-sensible'
+			set -g @plugin 'tmux-plugins/tmux-yank' 
+			set -g @plugin 'catppuccin/tmux'
+
+			run '~/.tmux/plugins/tpm/tpm'
+
+			'';
+		};
 		vscode = {
 			enable = true;
 			enableExtensionUpdateCheck = true;

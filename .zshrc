@@ -114,27 +114,32 @@ alias dils="docker images -a"
 alias tf="terraform"
 
 
-MAIN_TMUX_SESSION="$(tmux ls | awk '{print substr($1, 1, length($1)-1)}')"
-if [[ -z $MAIN_TMUX_SESSION ]] then
-  /usr/bin/tmux new-session -s main;
-fi
+	
+if type tmux > /dev/null 2>&1; then
+  echo "TMUX found. Running session config..."
+  MAIN_TMUX_SESSION="$(tmux ls | awk '{print substr($1, 1, length($1)-1)}')"
+  if [[ -z $MAIN_TMUX_SESSION ]] then
+    /usr/bin/tmux new-session -s main;
+  fi
+else
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Check if docker service is running
-IS_DOCKER_RUNNING="$(service docker status | grep 'Docker is running')"
-if [[ -z $IS_DOCKER_RUNNING ]]; then
-  printf "Starting docker ...\n"
-  sudo /usr/sbin/service docker start
-fi
+# IS_DOCKER_RUNNING="$(service docker status | grep 'Docker is running')"
+# if [[ -z $IS_DOCKER_RUNNING ]]; then
+#   printf "Starting docker ...\n"
+#   sudo /usr/sbin/service docker start
+# fi
 
-export is_vim=
+# export is_vim=
 
 # bun completions
-[ -s "/home/jlcarruda/.bun/_bun" ] && source "/home/jlcarruda/.bun/_bun"
+# [ -s "/home/jlcarruda/.bun/_bun" ] && source "/home/jlcarruda/.bun/_bun"
 
 # bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# export BUN_INSTALL="$HOME/.bun"
+# export PATH="$BUN_INSTALL/bin:$PATH"

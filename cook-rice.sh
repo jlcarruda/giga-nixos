@@ -14,6 +14,9 @@ while getopts "ho:" opt; do
   esac
 done
 
+# install TPM
+mkdir -p ~/.tmux/plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Install Home-manager
 sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz home-manager
