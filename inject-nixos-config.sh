@@ -34,13 +34,13 @@ inject() {
   if [ "$only" = "all" ]; then
     _inject_cachix
     _inject_config_os
-    _inject_hardware
+    # _inject_hardware
   elif [ "$only" = "cachix" ]; then
     _inject_cachix
   elif [ "$only" = "os" ]; then
     _inject_config_os
   elif [ "$only" = "hardware" ]; then
-    _inject_hardware
+    # _inject_hardware
   fi
 }
 
