@@ -39,9 +39,9 @@ inject() {
     _inject_cachix
   elif [ "$only" = "os" ]; then
     _inject_config_os
-  elif [ "$only" = "hardware" ]; then
-    # _inject_hardware
   fi
+  # elif [ "$only" = "hardware" ]; then
+    # _inject_hardware
 }
 
 _inject_cachix() {
