@@ -117,7 +117,7 @@ in {
   # $ nix search wget
   environment = {
 	systemPackages = with pkgs; [
-    	vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    			vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 			wget
 			nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
 			bc
@@ -190,6 +190,9 @@ in {
 		fzf
 		tldr
 		vimPlugins.vim-parinfer
+		slack
+		openvpn
+		mongodb-compass
 	];
 	home.stateVersion = "23.05";
   	
