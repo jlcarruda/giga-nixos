@@ -2,9 +2,10 @@ from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
-from modules.keybindings import keys, mouse
-
+from variables import *
 import modules.autostart
+from modules.keybindings import keys, mouse
+from modules.utils import get_net_dev
 
 mod = "mod4"
 
@@ -73,13 +74,18 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+wifi = get_net_dev()
+
 screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.CurrentLayout(),
+                widget.Sep(
+                    padding=5
+                ),
                 widget.GroupBox(
-                    font=awesome_font
+                    font=awesome_font,
+                    borderwidth=1
                 ),
                 widget.Prompt(),
                 widget.WindowName(),
@@ -89,11 +95,14 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
+                widget.Net(interface=wifi),
+                widget.CurrentLayoutIcon(),
+                widget.CurrentLayout(),
                 widget.Systray(),
+                widget.KeyboardLayout(),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
                 widget.QuickExit(),
             ],
