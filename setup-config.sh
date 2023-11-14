@@ -1,20 +1,25 @@
 #!/bin/sh
 
 USER=$(whoami)
-config_dir="/home/$USER/.config"
-backup_dir="$config_dir/.backup"
-if [ -d "$backup_dir" ]; then
-    rm -rf "$backup_dir"
+CONFIG_DIR="/home/$USER/.config"
+PICTURES_DIR="/home/$USER/Pictures"
+BACKUP_DIR="$CONFIG_DIR/.backup"
+if [ -d "$BACKUP_DIR" ]; then
+    rm -rf "$BACKUP_DIR"
 fi
 
-mkdir -p "$backup_dir"
+mkdir -p "$BACKUP_DIR"
 
 configs=("qtile" "home-manager" "alacritty" "rofi")
 
 for dir in "${configs[@]}"; do
-    if [ -d "$config_dir/$dir" ]; then
-        cp -r "$config_dir/$dir" "$backup_dir"
-        rm -rf "$config_dir/$dir"
+    if [ -d "$CONFIG_DIR/$dir" ]; then
+        cp -r "$CONFIG_DIR/$dir" "$BACKUP_DIR"
+        rm -rf "$CONFIG_DIR/$dir"
     fi
-    cp -r "./.config/$dir" "$config_dir"
+    cp -r "./.config/$dir" "$CONFIG_DIR"
 done
+
+if [ ! "$(ls -A $PICTURES_DIR)" ]; then
+    cp -r "./Pictures/*" "$PICTURES_DIR"
+fi
