@@ -73,9 +73,6 @@ in {
 			};
 		};
 	};
-	picom = {
-		enable = true;
-	};
   }; 
 
  # services.xserver.xkbOptions = "eurosign:e,caps:escape";
@@ -188,14 +185,132 @@ in {
 		gobuster
 		go
 		aircrack-ng
-		eww
 		nitrogen
 		rofi
+		fzf
+		tldr
 		vimPlugins.vim-parinfer
 	];
 	home.stateVersion = "23.05";
   	
-	services.picom.enable = true;	
+	services.picom = {
+		backend = "xrender";
+		# backend = "glx";
+		enable = true;
+		fade = true;
+		vSync = true;
+		fadeDelta = 4;
+		extraArgs = [
+			"--experimental-backends"
+		];
+		fadeExclude = [
+			"class_g = 'slop'"
+		];
+		fadeSteps = [
+			0.03
+			0.03
+		];
+		opacityRules = [
+			"99:class_g = 'Code' && focused"
+			"85:class_g = 'Code' && !focused"
+			"99:class_g = 'Alacritty' && focused"
+			"85:class_g = 'Alacritty' && !focused"
+			"99:class_g = 'alacritty' && focused"
+			"85:class_g = 'alacritty' && !focused"
+			"99:class_g = 'Rofi' && focused"
+			"85:class_g = 'Rofi' && !focused"
+			"99:class_g = 'URxvt' && focused"
+			"85:class_g = 'URxvt' && !focused"
+			"99:class_g = 'Thunar' && focused"
+			"85:class_g = 'Thunar' && !focused"
+			"99:class_g = 'thunar' && focused"
+			"85:class_g = 'thunar' && !focused"
+			"99:class_g = 'thunderbird' && focused"
+			"85:class_g = 'thunderbird' && !focused"
+			"99:class_g = 'Mail' && focused"
+			"85:class_g = 'Mail' && !focused"
+			"99:class_g = 'Msgcompose' && focused"
+			"85:class_g = 'Msgcompose' && !focused"
+			"99:class_g = 'Conky' && focused"
+			"85:class_g = 'Conky' && !focused"
+			"99:class_g = 'TelegramDesktop' && focused"
+			"85:class_g = 'TelegramDesktop' && !focused"
+			"99:class_g = 'whatsdesk' && focused"
+			"85:class_g = 'whatsdesk' && !focused"
+			"99:class_g = 'brave' && focused"
+			"85:class_g = 'brave' && !focused"
+			"99:class_g = 'firefox' && focused"
+			"85:class_g = 'firefox' && !focused"
+		];
+		wintypes = { 
+			tooltip 	  = { fade = true; shadow = false; opacity = 0.9; };
+			menu          = { fade = true; shadow = false; opacity = 0.9; };
+			popup_menu    = { fade = false; shadow = true; opacity = 0.9; };
+			dropdown_menu = { fade = true; shadow = false; opacity = 0.9; };
+			utility       = { fade = true; shadow = false; opacity = 0.9; };
+			dialog        = { fade = true; shadow = false; opacity = 0.9; };
+			notify        = { fade = true; shadow = false; opacity = 0.9; };
+		};
+		settings = {
+			unredir-if-possible = true;
+			# paint-on-overlay = true
+			# glx-no-stencil = true
+			# glx-no-rebind-pixmap = true
+			# glx-swap-method = "copy"
+			show-all-xerrors = false;
+			log-level = "info";
+			xrender-sync-fence = true;
+			detect-transient = true;
+			use-ewmh-active-win = true;
+			detect-client-opacity = true;
+			animation-stiffness = 230;
+			animation-window-mass = 0.5;
+			animation-dampening = 25;
+			animation-clamping = false;
+			animation-for-open-window = "zoom"; #open window
+			animation-for-unmap-window = "auto"; #minimize window
+			animation-for-workspace-switch-in = "fly-in"; #the windows in the workspace that is coming in
+			animation-for-workspace-switch-out = "auto"; #the windows in the workspace that are coming out
+			animation-for-transient-window = "fly-in"; #popup windows
+			corner-radius = 10;
+			round-borders = 10;
+			rounded-corners-exclude = [
+				"class_g = 'awesome'"
+				"class_g = 'kitty'"
+				"class_g = 'Polybar'"
+			];
+			round-borders-rule = [
+				"3:class_g      = 'XTerm'"
+				"3:class_g      = 'URxvt'"
+				"10:class_g     = 'Alacritty'"
+				"15:class_g     = 'Signal'"
+				];
+			blur = {
+				method = "dual_kawase";
+				strength = 10;
+				deviation = 1;
+				kern = "31,31,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1";
+				background = true;
+				background-frame = true;
+				background-fixed = true;
+				#kern = "3x3box";
+			};
+			blur-background-exclude = [
+				"window_type = 'dock'"
+				"window_type = 'desktop'"
+				"class_g = 'slop'"
+				"class_g = 'Gromit-mpx'"
+				"class_i = 'Gromit-mpx'"
+				"class_g = 'Slack'"
+				"class_i = 'Slack'"
+				"class_g = 'slack'"
+				"class_i = 'slack'"
+				"class_g = 'Peek'"
+				"_GTK_FRAME_EXTENTS@:c"
+				"QTILE_INTERNAL:32c = 1"
+			];
+		};
+	};	
 	programs = {
 		tmux = {
 			enable = true;

@@ -1,5 +1,5 @@
 #!/bin/sh
-picom &                                                                 # compositor
+picom --experimental-backends &                                                                 # compositor
 nitrogen --restore &                                                    # wallpaper
 # eww open bar &                                                        # bar
 # ~/.config/eww/scripts/workspaces &                                    # workspaces for bar
