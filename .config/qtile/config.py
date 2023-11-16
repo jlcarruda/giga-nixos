@@ -1,22 +1,29 @@
+import os
+import json
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
-from variables import *
-import modules.autostart
-from modules.keybindings import keys, mouse
-from modules.utils import get_net_dev
+import scripts.autostart
+from scripts.keybindings import keys, mouse
+from scripts.utils import get_net_dev
+
+# from qtile_extras import widget as extraWidgets
 
 mod = "mod4"
+home = os.path.expanduser('~')
 
 # groups = [Group(i) for i in "123456789"]
 groups = []
 group_names = ["Escape","1","2","3","4","5","6","7","8","9"]
 group_layouts=["monadtall", "monadtall", "monadtall", "monadtall","monadtall", "monadtall", "monadtall","monadwide", "monadtall", "monadtall"]
 group_labels=["零","一","二","三","四","五","六","七","八","九"]
+# group_labels=["SHELL","WWW","CODE","三","四","五","六","七","八","九"]
 
 main_font = "Fira Code Medium" # Font in use for the entire system
 awesome_font = "Font Awesome 6 Pro" # Font for the icons
+font_size=17 
+bar_size=30
 
 for i in range(len(group_names)):
     groups.append(
@@ -51,6 +58,20 @@ for i in groups:
         ]
     )
 
+with open(home + '/.config/qtile/colors.json') as wal_import:
+  data = json.load(wal_import)
+#   wallpaper = data['wallpaper']
+  colors = data['colors']
+  val_colors = list(colors.values())
+  def getList(val_colors):
+    return [*val_colors]
+    
+  def init_colors():
+    return [*val_colors]
+
+color = init_colors()
+transparent=color[0] + "00"
+
 layouts = [
     layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
     layout.Max(),
@@ -80,6 +101,13 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+                widget.TextBox(
+                    foreground=color[1],
+                    background=transparent,
+                    padding=-1,
+                    fontsize=font_size+7,
+                    text="░▒▓",
+                ),
                 widget.Sep(
                     padding=5
                 ),

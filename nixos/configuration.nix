@@ -34,8 +34,13 @@ in {
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
+  i18n = {
+	defaultLocale = "pt_BR.UTF-8";  #"en_US.UTF-8";
+	extraLocaleSettings = {
+		LC_MESSAGES = "en_US.UTF-8";
+	};	  
+  };  
+# console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
@@ -113,9 +118,13 @@ in {
    	];
  	};
 
+  virtualisation.docker = {
+	enable = true;	
+  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
+	etc.hosts.mode = "0644";
 	systemPackages = with pkgs; [
     			vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 			wget
@@ -125,6 +134,7 @@ in {
 			ripgrep
 			rustc
 			wirelesstools
+			python310Packages.qtile-extras
 		];
   };
 
@@ -166,7 +176,6 @@ in {
 		fira-code-symbols
 		font-awesome
 		fira-mono
-		docker
 		tmux
 		nmap
 		docker
@@ -193,13 +202,14 @@ in {
 		slack
 		openvpn
 		mongodb-compass
+		burpsuite
 	];
 	home.stateVersion = "23.05";
   	
 	services.picom = {
 		backend = "xrender";
 		# backend = "glx";
-		enable = true;
+		enable = false;
 		fade = true;
 		vSync = true;
 		fadeDelta = 4;
