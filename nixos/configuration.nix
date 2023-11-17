@@ -16,7 +16,7 @@ in {
       ./cachix.nix
 
     ];
-
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "nvidia-x11" "nvidia-settings" "nvidia-persistenced" ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
@@ -52,6 +52,7 @@ in {
 	tumbler.enable = true;
 	xserver = {
 		enable = true;
+		videoDrivers = ["nvidia"];
 		layout = "us";
 		gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 		displayManager = {
@@ -87,20 +88,28 @@ in {
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  hardware = {
+	pulseaudio.enable = true;
+	opengl = {
+		enable = true;
+		driSupport = true;
+		driSupport32Bit = true;
+	};
+	nvidia = {
+		modesetting.enable = true;
+		powerManagement = {
+			enable = false;
+			finegrained = false;
+		};
+		open = false;
+		nvidiaSettings = true;
+		package = config.boot.kernelPackages.nvidiaPackages.stable;	
+	};
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.alice = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
-  # };
   users.users.${userName} = {
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -119,14 +128,14 @@ in {
  	};
 
   virtualisation.docker = {
-	enable = true;	
+		enable = true;	
   };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment = {
 	etc.hosts.mode = "0644";
 	systemPackages = with pkgs; [
-    			vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    	vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 			wget
 			nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
 			bc
@@ -203,13 +212,14 @@ in {
 		openvpn
 		mongodb-compass
 		burpsuite
+		glxinfo
+		dbeaver
 	];
 	home.stateVersion = "23.05";
   	
 	services.picom = {
-		backend = "xrender";
-		# backend = "glx";
-		enable = false;
+		backend = "glx";
+		enable = true;
 		fade = true;
 		vSync = true;
 		fadeDelta = 4;
@@ -265,11 +275,12 @@ in {
 			notify        = { fade = true; shadow = false; opacity = 0.9; };
 		};
 		settings = {
+			animations = true;
 			unredir-if-possible = true;
 			# paint-on-overlay = true
-			# glx-no-stencil = true
-			# glx-no-rebind-pixmap = true
-			# glx-swap-method = "copy"
+			glx-no-stencil = true;
+			glx-no-rebind-pixmap = true;
+			glx-swap-method = "copy";
 			show-all-xerrors = false;
 			log-level = "info";
 			xrender-sync-fence = true;
@@ -285,7 +296,7 @@ in {
 			animation-for-workspace-switch-in = "fly-in"; #the windows in the workspace that is coming in
 			animation-for-workspace-switch-out = "auto"; #the windows in the workspace that are coming out
 			animation-for-transient-window = "fly-in"; #popup windows
-			corner-radius = 10;
+			#corner-radius = 10;   # probably the cause for the memory leak. See https://github.com/yshui/picom/issues/892
 			round-borders = 10;
 			rounded-corners-exclude = [
 				"class_g = 'awesome'"
