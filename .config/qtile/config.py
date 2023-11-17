@@ -108,6 +108,8 @@ screens = [
                     fontsize=font_size+7,
                     text="░▒▓",
                 ),
+                widget.CurrentLayoutIcon(),
+                widget.CurrentLayout(),
                 widget.Sep(
                     padding=5
                 ),
@@ -116,7 +118,10 @@ screens = [
                     borderwidth=1
                 ),
                 widget.Prompt(),
-                widget.WindowName(),
+                widget.Sep(
+                    padding=5
+                ),
+                widget.TaskList(),
                 widget.Chord(
                     chords_colors={
                         "launch": ("#ff0000", "#ffffff"),
@@ -126,16 +131,25 @@ screens = [
 
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
+                widget.Memory(),
+                widget.Sep(
+                    padding=5
+                ),
                 widget.Net(interface=wifi),
-                widget.CurrentLayoutIcon(),
-                widget.CurrentLayout(),
                 widget.Systray(),
                 widget.KeyboardLayout(),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
                 widget.QuickExit(),
+                widget.TextBox(
+                    foreground=color[1],
+                    background=transparent,
+                    padding=-1,
+                    fontsize=font_size+7,
+                    text="▓▒░",
+                )
             ],
             24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
     ),
