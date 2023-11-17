@@ -236,9 +236,9 @@ in {
 		opacityRules = [
 			"99:class_g = 'Code' && focused"
 			"85:class_g = 'Code' && !focused"
-			"99:class_g = 'Alacritty' && focused"
+			"95:class_g = 'Alacritty' && focused"
 			"85:class_g = 'Alacritty' && !focused"
-			"99:class_g = 'alacritty' && focused"
+			"95:class_g = 'alacritty' && focused"
 			"85:class_g = 'alacritty' && !focused"
 			"99:class_g = 'Rofi' && focused"
 			"85:class_g = 'Rofi' && !focused"
@@ -280,7 +280,7 @@ in {
 			# paint-on-overlay = true
 			glx-no-stencil = true;
 			glx-no-rebind-pixmap = true;
-			glx-swap-method = "copy";
+			use-damage = true;
 			show-all-xerrors = false;
 			log-level = "info";
 			xrender-sync-fence = true;
