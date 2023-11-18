@@ -138,6 +138,7 @@ in {
   };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+	
   environment = {
 	etc.hosts.mode = "0644";
 	systemPackages = with pkgs; [
@@ -149,7 +150,14 @@ in {
 			ripgrep
 			rustc
 			wirelesstools
-			python310Packages.qtile-extras
+			python39Packages.qtile-extras
+			(python39.withPackages(ps: with ps; [
+				pandas
+				requests
+				neovim
+				pynvim
+				#pacu	
+			]))
 		];
   };
 
@@ -191,6 +199,11 @@ in {
 		alacritty
 		burpsuite
 		dbeaver
+		zprint 
+		zig
+		nimlsp
+		nim-unwrapped
+		google-java-format
 		discord
 		docker
 		dunst
