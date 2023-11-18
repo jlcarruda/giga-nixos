@@ -24,6 +24,12 @@ main_font = "Fira Code Medium" # Font in use for the entire system
 awesome_font = "Font Awesome 6 Pro" # Font for the icons
 font_size=17 
 bar_size=30
+layout_margin=10
+single_layout_margin=10
+layout_border_width=5
+single_border_width=5
+max_ratio=0.85
+ratio=0.70
 
 for i in range(len(group_names)):
     groups.append(
@@ -72,20 +78,29 @@ with open(home + '/.config/qtile/colors.json') as wal_import:
 color = init_colors()
 transparent=color[0] + "00"
 
+## ============ LAYOUTS ================
+def default_layout_theme():
+    return {
+        "font": main_font,
+        "fontsize": font_size,
+        "margin": layout_margin,
+        "border_on_single": False,
+        "border_width": layout_border_width,
+        "border_normal": color[0],
+        "border_focus": color[2],
+        "single_margin": single_layout_margin,
+        "single_border_width": single_border_width,
+        "change_ratio": 0.01,
+        "new_client_position":'bottom',
+    }
+
+default_layout_configs = default_layout_theme()
+
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
-    layout.Max(),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
+    # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4, **default_layout_configs),
+    layout.MonadTall(max_ratio=max_ratio, ratio=ratio, **default_layout_configs),
+    layout.MonadWide(max_ratio=max_ratio, ratio=0.85, **default_layout_configs),
+    layout.Matrix(**default_layout_configs)
 ]
 
 widget_defaults = dict(
@@ -128,9 +143,6 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
                 widget.Memory(),
                 widget.Sep(
                     padding=5
@@ -162,6 +174,9 @@ screens = [
 #     Click([mod], "Button2", lazy.window.bring_to_front()),
 # ]
 floating_layout = layout.Floating(
+    border_width=layout_border_width,
+    border_normal=color[0],
+    border_focus=color[2],
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
@@ -174,11 +189,19 @@ floating_layout = layout.Floating(
     ]
 )
 
+# Drag floating layouts.
+mouse = [
+    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Click([mod], "Button2", lazy.window.bring_to_front()),
+]
+
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
-bring_front_click = True
-cursor_warp = False
+bring_front_click = 'floating_only'
+cursor_warp = True
+
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
@@ -186,7 +209,7 @@ dpi_scale = 1.0
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
-auto_minimize = True
+auto_minimize = False
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None

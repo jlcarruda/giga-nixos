@@ -14,9 +14,12 @@ in {
       ./hardware-configuration.nix
       <home-manager/nixos>
       ./cachix.nix
-
     ];
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "nvidia-x11" "nvidia-settings" "nvidia-persistenced" ];
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ 
+	"nvidia-x11"
+	"nvidia-settings"
+	"nvidia-persistenced"
+  ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
@@ -40,6 +43,10 @@ in {
 		LC_MESSAGES = "en_US.UTF-8";
 	};	  
   };  
+
+  nix.extraOptions = ''
+	experimental-features = nix-command flakes
+  '';
 # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -47,7 +54,6 @@ in {
   # };
 
   # Enable the X11 windowing system.
-
   services = {
 	tumbler.enable = true;
 	xserver = {
@@ -181,39 +187,42 @@ in {
 	nixpkgs.config.allowBroken = true;
 	home.packages = with pkgs; [
 		(nerdfonts.override { fonts =[ "FiraCode" "DroidSansMono" "Hack" "AnonymousPro" ]; })
-		jetbrains-mono
-		fira-code-symbols
-		font-awesome
-		fira-mono
-		tmux
-		nmap
-		docker
-		zsh
-		firefox
-		alacritty
-		git
-		flameshot
-		gcc
-		dunst
-		nodejs
-		pavucontrol
-		neovim
-		picom
-		steam
-		gobuster
-		go
 		aircrack-ng
-		nitrogen
-		rofi
-		fzf
-		tldr
-		vimPlugins.vim-parinfer
-		slack
-		openvpn
-		mongodb-compass
+		alacritty
 		burpsuite
-		glxinfo
 		dbeaver
+		discord
+		docker
+		dunst
+		fira-code-symbols
+		fira-mono
+		firefox
+		flameshot
+		font-awesome
+		fzf
+		gcc
+		git
+		glxinfo
+		go
+		gobuster
+		jetbrains-mono
+		mongodb-compass
+		neovim
+		nitrogen
+		nmap
+		nodejs
+		openvpn
+		pavucontrol
+		picom
+		rofi
+		slack
+		steam
+		tldr
+		tmux
+		unrar
+		unzip
+		vimPlugins.vim-parinfer
+		zsh
 	];
 	home.stateVersion = "23.05";
   	
