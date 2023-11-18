@@ -129,12 +129,3 @@ if [[ -z $IS_DOCKER_RUNNING ]]; then
   printf "Starting docker ...\n"
   sudo /usr/sbin/service docker start
 fi
-
-export is_vim=
-
-# bun completions
-[ -s "/home/jlcarruda/.bun/_bun" ] && source "/home/jlcarruda/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
