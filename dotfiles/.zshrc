@@ -110,6 +110,7 @@ alias dcprune="docker container prune"
 alias diprune="docker image prune"
 alias dcls="docker container list -a"
 alias dils="docker images -a"
+alias drit="docker run --it"
 
 alias tf="terraform"
 
