@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, options, ... }:
 
 let
   userName="giga"; 
@@ -20,6 +20,11 @@ in {
 	"nvidia-settings"
 	"nvidia-persistenced"
   ];
+
+	nix.nixPath =
+    options.nix.nixPath.default ++
+    [ "nixpkgs-overlays=/etc/nixos/overlays-compat/" ]
+  ;
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
@@ -75,7 +80,10 @@ in {
 			${pkgs.xorg.xrandr}/bin/xrandr --output ${xOutput} --mode 1920x1080
 			'';
 		};
-		windowManager.qtile.enable = true;
+		windowManager.qtile = {
+			enable = true;
+			extraPackages = python3Packages: with python3Packages; [qtile-extras];
+		};
 		desktopManager = {
 			xterm.enable = false;
 			xfce = {
