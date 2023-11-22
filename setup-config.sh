@@ -24,8 +24,3 @@ if [ ! "$(ls -A $PICTURES_DIR)" ]; then
     cp -r "./Pictures/*" "$PICTURES_DIR"
 fi
 
-# INSTALL NYOOM
-git clone --depth 1 https://github.com/nyoom-engineering/nyoom.nvim.git ~/.config/nvim
-~/.config/nvim/bin/nyoom install
-~/.config/nvim/bin/nyoom sync 
-

@@ -33,3 +33,8 @@ cp "./dotfiles/.zshrc" "$HOME"
 
 # setup config
 ./setup-config.sh
+
+# INSTALL NYOOM
+git clone --depth 1 https://github.com/nyoom-engineering/nyoom.nvim.git ~/.config/nvim
+~/.config/nvim/bin/nyoom install
+~/.config/nvim/bin/nyoom sync 
