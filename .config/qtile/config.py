@@ -1,42 +1,26 @@
 import os
 import json
 from libqtile import bar, layout, widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Match, Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
-import scripts.autostart
+import scripts.hooks
+from scripts.variables import *
 from scripts.keybindings import keys, mouse
 from scripts.utils import get_net_dev
 
 # from qtile_extras import widget as extraWidgets
 
-mod = "mod4"
-home = os.path.expanduser('~')
-
-awesome_font = "Font Awesome 6 Pro" # Font for the icons
-main_font = "Fira Code Medium" # Font in use for the entire system
-font_size=17 
-bar_size=30
-layout_margin=10
-single_layout_margin=10
-layout_border_width=5
-single_border_width=5
-max_ratio=0.85
-ratio=0.70
-
 # groups = [Group(i) for i in "123456789"]
-groups = []
-group_names = ["Escape","1","2","3","4","5","6","7","8","9"]
-group_layouts=["monadtall", "monadtall", "monadtall", "monadtall","monadtall", "monadtall", "monadtall","monadwide", "monadtall", "monadtall"]
-group_labels=["零","一","二","三","四","五","六","七","八","九"]
-# group_labels=["SHELL","WWW","CODE","三","四","五","六","七","八","九"]
+
 
 for i in range(len(group_names)):
     groups.append(
         Group(
             name=group_names[i],
-            layout=group_layouts[i].lower(),
-            label=group_labels[i],
+            layout=group_layouts[i].lower() if i < len(group_layouts) else "monadtall",
+            label=group_labels[i] if i < len(group_labels) else "󰏃",
+            matches=[Match(wm_class=group_matches[i])] if i < len(group_matches) else []
         )
     )
 
@@ -97,7 +81,7 @@ def default_layout_theme():
 default_layout_configs = default_layout_theme()
 
 layouts = [
-    # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4, **default_layout_configs),
+    layout.Columns(**default_layout_configs),
     layout.MonadTall(max_ratio=max_ratio, ratio=ratio, **default_layout_configs),
     layout.MonadWide(max_ratio=max_ratio, ratio=0.85, **default_layout_configs),
     layout.Matrix(**default_layout_configs)
