@@ -150,13 +150,15 @@ in {
 			ripgrep
 			rustc
 			wirelesstools
-			python39Packages.qtile-extras
-			(python39.withPackages(ps: with ps; [
+			python3Packages.qtile-extras
+			(python3.withPackages(ps: with ps; [
 				pandas
 				requests
 				neovim
 				pynvim
 				#pacu	
+				python-ldap
+				pip
 			]))
 		];
   };
@@ -236,6 +238,9 @@ in {
 		unzip
 		vimPlugins.vim-parinfer
 		zsh
+		neofetch
+		ripgrep
+		exploitdb
 	];
 	home.stateVersion = "23.05";
   	
@@ -468,9 +473,25 @@ in {
 			set -g @plugin 'tmux-plugins/tmux-sensible'
 			set -g @plugin 'tmux-plugins/tmux-yank' 
 			set -g @plugin 'catppuccin/tmux'
+			
+			set -g @catppuccin_window_left_separator "█"
+			set -g @catppuccin_window_right_separator "█ "
+			set -g @catppuccin_window_number_position "right"
+			set -g @catppuccin_window_middle_separator "  █"
 
+			set -g @catppuccin_window_default_fill "number"
+
+			set -g @catppuccin_window_current_fill "number"
+			set -g @catppuccin_window_current_text "#{pane_current_path}"
+
+			set -g @catppuccin_status_modules_right "application session date_time"
+			set -g @catppuccin_status_left_separator  ""
+			set -g @catppuccin_status_right_separator " "
+			set -g @catppuccin_status_right_separator_inverse "yes"
+			set -g @catppuccin_status_fill "all"
+			set -g @catppuccin_status_connect_separator "no"
 			run '~/.tmux/plugins/tpm/tpm'
-
+			
 			'';
 		};
 		vscode = {
