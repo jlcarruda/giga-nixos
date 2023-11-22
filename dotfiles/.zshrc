@@ -80,9 +80,6 @@ export PATH="$PATH:/home/jlcarruda/tools/nvim-linux64/bin:/home/jlcarruda/.local
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -102,6 +99,11 @@ export PATH="$PATH:/home/jlcarruda/tools/nvim-linux64/bin:/home/jlcarruda/.local
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+
+# PICOM_PID="$(ps -aux | grep picom | head -1 | awk '{print $2}')"
+
+# ======== ALIASES ========
+## --- Docker ---
 alias dcu="docker compose up"
 alias dcd="docker compose down"
 alias dcr="docker compose run"
@@ -111,9 +113,12 @@ alias diprune="docker image prune"
 alias dcls="docker container list -a"
 alias dils="docker images -a"
 alias drit="docker run --it"
-
+## --- Terraform ---
 alias tf="terraform"
-
+## --- Utilities ---
+alias killPicom="kill $(ps -aux | grep picom | head -1 | awk '{print $2}')"
+alias qtileReload="qtile cmd-obj -o cmd -f reload_config"
+alias shell="nix-shell -p"
 
 MAIN_TMUX_SESSION="$(tmux ls | awk '{print substr($1, 1, length($1)-1)}')"
 if [[ -z $MAIN_TMUX_SESSION ]] then
@@ -124,9 +129,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Check if docker service is running
-IS_DOCKER_RUNNING="$(service docker status | grep 'Docker is running')"
-if [[ -z $IS_DOCKER_RUNNING ]]; then
-  printf "Starting docker ...\n"
-  sudo /usr/sbin/service docker start
-fi
+# Settings for kb 60% US to be able to type cedilla and accentuation
+setxkbmap -model abnt2 -layout us -variant intl
