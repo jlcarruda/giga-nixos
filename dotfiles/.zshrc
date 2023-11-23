@@ -27,6 +27,12 @@ alias qtileReload="qtile cmd-obj -o cmd -f reload_config"
 alias shell="nix-shell -p"
 alias xoutputs="echo $(xrandr | grep -E " connected" | awk '{print $1}')"
 
+## --- Nix-Shell Wrapped commands  ---
+alias nyoom="shell python39 rnix-lsp -p 'python39.withPackages(ps: with ps; [ pynvim ])' --run nvim" # Run nyoom with python 3.9, rnix-lsp and pynvim installed
+
+## WIP
+#alias pacu="shell python38 -p 'python38.withPackages(ps: with ps; [ pacu ])' --run pacu" # Run pacu with python 3.8 (No Pacu found. Need an overlay?)
+
 MAIN_TMUX_SESSION="$(tmux ls | awk '{print substr($1, 1, length($1)-1)}')"
 if [[ -z $MAIN_TMUX_SESSION ]] then
   /usr/bin/tmux new-session -s main;
