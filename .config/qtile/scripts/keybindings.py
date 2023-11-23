@@ -6,9 +6,10 @@
 # ----------------------------------------
 #  Used to control windows and window
 #  placement
+import os
+# from functions import screenshot
 from libqtile.command import lazy
 from libqtile.config import EzKey, EzDrag, EzClick
-import os
 
 @lazy.window.function
 def float_to_front(window):
@@ -67,7 +68,9 @@ windowFocus = [
     EzKey("A-h", lazy.layout.left(), desc="Move focus to left"),
     EzKey("A-l", lazy.layout.right(), desc="Move focus to right"),
     EzKey("A-j", lazy.layout.down(), desc="Move focus down"),
-    EzKey("A-k", lazy.layout.up(), desc="Move focus up")
+    EzKey("A-k", lazy.layout.up(), desc="Move focus up"),
+    EzKey("A-g", lazy.window.toggle_fullscreen()),
+    EzKey("A-S", lazy.window.toggle_floating()),
 ]
 
 windowControl = [
@@ -102,11 +105,19 @@ scrcap = [
     EzKey("<Print>", lazy.spawn(SCREENSHOT)),
 ]
 
+# Volume
+volumeControls = [
+    Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")), # Mute
+    Key([], "XF86AudioLowerVolume", lazy.spawn("amixer -q set Master 2%- && dunstify -a Volume ' '$(pamixer --get-volume-human) -h int:value:$(pamixer --get-volume)", shell=True)),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("amixer -q set Master 2%+ && dunstify -a Volume ' '$(pamixer --get-volume-human) -h int:value:$(pamixer --get-volume)", shell=True)), # Raise Volume
+]
+
 keys = [
     *windowFocus,
     *windowControl,
     *qtileControl,
     *scrcap,
     *launchers,
-    *applicationSpawns
+    *applicationSpawns,
+    *volumeControls
 ]
