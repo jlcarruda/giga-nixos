@@ -46,15 +46,15 @@ inject() {
 
 _inject_cachix() {
   cp -r ./nixos/cachix "$nixos_dir"
-  cp -r ./nixos/cachix.nix "$nixos_dir"
+  cp ./nixos/cachix.nix "$nixos_dir"
 }
 
 _inject_config_os() {
-  cp -r ./nixos/configuration.nix "$nixos_dir"
+  cp ./nixos/configuration.nix "$nixos_dir"
 }
 
 _inject_hardware() {
-  cp -r ./nixos/hardware-configuration.nix "$nixos_dir"
+  cp ./nixos/hardware-configuration.nix "$nixos_dir"
 }
 
 inject

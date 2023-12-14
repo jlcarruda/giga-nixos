@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running `nixos-help`).
-
 { config, pkgs, lib, options, ... }:
 
 let
@@ -21,27 +17,14 @@ in {
 	"nvidia-persistenced"
   ];
 
-	nix.nixPath =
-    options.nix.nixPath.default ++
-    [ "nixpkgs-overlays=/etc/nixos/overlays-compat/" ]
-  ;
-  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.consoleMode = "auto";
   boot.loader.efi.canTouchEfiVariables = true;
-  # networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
   i18n = {
 	defaultLocale = "pt_BR.UTF-8";  #"en_US.UTF-8";
 	extraLocaleSettings = {
@@ -52,73 +35,64 @@ in {
   nix.extraOptions = ''
 	experimental-features = nix-command flakes
   '';
-# console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkbOptions in tty.
-  # };
 
-  # Enable the X11 windowing system.
+
   services = {
-	tumbler.enable = true;
-	xserver = {
-		enable = true;
-		videoDrivers = ["nvidia"];
-		layout = "us";
-		gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
-		displayManager = {
-			lightdm = {
-				enable = true;
-				greeters = {
-					slick = {
-						enable = true;
-						draw-user-backgrounds = true;
+		tumbler.enable = true;
+		xserver = {
+			enable = true;
+			videoDrivers = ["nvidia"];
+			layout = "us";
+			gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+			displayManager = {
+				lightdm = {
+					enable = true;
+					greeters = {
+						slick = {
+							enable = true;
+							draw-user-backgrounds = true;
+						};
 					};
 				};
+				setupCommands = ''
+				${pkgs.xorg.xrandr}/bin/xrandr --output ${xOutput} --mode 1920x1080
+				'';
 			};
-			setupCommands = ''
-			${pkgs.xorg.xrandr}/bin/xrandr --output ${xOutput} --mode 1920x1080
-			'';
-		};
-		windowManager.qtile = {
-			enable = true;
-			extraPackages = python3Packages: with python3Packages; [qtile-extras];
-		};
-		desktopManager = {
-			xterm.enable = false;
-			xfce = {
+			windowManager.qtile = {
 				enable = true;
-				noDesktop = true;
-				enableXfwm = false;
+				extraPackages = python3Packages: with python3Packages; [
+					qtile-extras
+				];
+			};
+			desktopManager = {
+				xterm.enable = false;
+				xfce = {
+					enable = true;
+					noDesktop = true;
+					enableXfwm = false;
+				};
 			};
 		};
-	};
   }; 
 
- # services.xserver.xkbOptions = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
   sound.enable = true;
   hardware = {
-	pulseaudio.enable = true;
-	opengl = {
-		enable = true;
-		driSupport = true;
-		driSupport32Bit = true;
-	};
-	nvidia = {
-		modesetting.enable = true;
-		powerManagement = {
-			enable = false;
-			finegrained = false;
+		pulseaudio.enable = true;
+		opengl = {
+			enable = true;
+			driSupport = true;
+			driSupport32Bit = true;
 		};
-		open = false;
-		nvidiaSettings = true;
-		package = config.boot.kernelPackages.nvidiaPackages.stable;	
-	};
+		nvidia = {
+			modesetting.enable = true;
+			powerManagement = {
+				enable = false;
+				finegrained = false;
+			};
+			open = false;
+			nvidiaSettings = true;
+			package = config.boot.kernelPackages.nvidiaPackages.stable;	
+		};
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -148,8 +122,8 @@ in {
   # $ nix search wget
 	
   environment = {
-	etc.hosts.mode = "0644";
-	systemPackages = with pkgs; [
+		etc.hosts.mode = "0644";
+		systemPackages = with pkgs; [
     	vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 			wget
 			nix-gaming.packages.${pkgs.hostPlatform.system}.northstar-proton
@@ -158,7 +132,8 @@ in {
 			ripgrep
 			rustc
 			wirelesstools
-			python3Packages.qtile-extras
+			python3
+			pywal
 			(python3.withPackages(ps: with ps; [
 				pandas
 				requests
@@ -172,23 +147,23 @@ in {
   };
 
   programs = {
-	thunar = {
-		plugins = with pkgs.xfce; [
-			thunar-archive-plugin
-			thunar-volman
-		];	
-	};
-	zsh = {
-		enable = true;
-		ohMyZsh = {
-   			enable = true;
-    			plugins = ["git" "python" "docker"];
-    			theme = "agnoster";
-  		};
-		shellAliases = {
-			ll = "ls -l";
-			rebuild = "sudo nixos-rebuild switch";	
+		thunar = {
+			plugins = with pkgs.xfce; [
+				thunar-archive-plugin
+				thunar-volman
+			];	
 		};
+		zsh = {
+			enable = true;
+			ohMyZsh = {
+					enable = true;
+						plugins = ["git" "python" "docker"];
+						theme = "agnoster";
+				};
+			shellAliases = {
+				ll = "ls -l";
+				rebuild = "sudo nixos-rebuild switch";	
+			};
   	};
   };
 	
@@ -196,8 +171,6 @@ in {
 
   home-manager.users.${userName} = { pkgs, ... }: {
 	fonts = {
-		# packages = with pkgs; [
-		# ];
 		fontconfig.enable = true;
 	};
 	nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "steam" "vscode" "linuxKernel" ];
@@ -248,6 +221,7 @@ in {
 		zsh
 		neofetch
 		ripgrep
+		entr
 		exploitdb
 	];
 	home.stateVersion = "23.05";
@@ -461,7 +435,6 @@ in {
 			set -g status-fg white
 			set -g status-interval 60
 			set -g status-left-length 30
-			#set -g status-left '#[fg=green](#S) #(whoami) #(curl "wttr.in/?format=3")'
 			set -g status-right '#[fg=yellow]#(cut -d " " -f 1-3 /proc/loadavg)#[default] #[fg=white]%H:%M#[default]'
 
 			# Floaterm bindings
@@ -471,13 +444,6 @@ in {
 			set -g @plugin 'tmux-plugins/tmp'
 
 			# Plugins list
-			#set -g @plugin 'tmux-plugins/tmux-ressurect'
-			#set -g @plugin 'tmux-plugins/tmux-continuum'
-			#set -g @plugin 'christoomey/vim-tmux-navigator'
-			#set -g @plugin 'jimeh/tmux-themepack'
-			#set -g @themepack 'powerline/default/cyan'
-			#set -g @ressurect-capture-pane-contents 'on'
-			#set -g @continuum-resote 'on'
 			set -g @plugin 'tmux-plugins/tmux-sensible'
 			set -g @plugin 'tmux-plugins/tmux-yank' 
 			set -g @plugin 'catppuccin/tmux'
@@ -518,28 +484,7 @@ in {
 		};
 	};
   };
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
   system.copySystemConfiguration = true;
 
   # This value determines the NixOS release from which the default
