@@ -18,15 +18,19 @@ alias dcprune="docker container prune"
 alias diprune="docker image prune"
 alias dcls="docker container list -a"
 alias dils="docker images -a"
-alias drit="docker run --it"
+alias drit="docker run -it"
 ## --- Terraform ---
 alias tf="terraform"
+## --- Cybersec ---
+alias pacu="drit -v ~/.aws:/root/.aws rhinosecuritylabs/pacu"
 ## --- Utilities ---
 alias killPicom="kill $(ps -aux | grep picom | head -1 | awk '{print $2}')"
+alias qtileForceReload="kill $(ps -aux | grep qtile | head -1 | awk '{print $2}') && qtileReload"
 alias qtileReload="qtile cmd-obj -o cmd -f reload_config"
 alias shell="nix-shell -p"
 alias xoutputs="echo $(xrandr | grep -E " connected" | awk '{print $1}')"
-
+alias kbdesk="setxkbmap -model abnt2 -layout us -variant intl" # 60% US Intl keyboard
+alias kbnote="setxkbmap -model abnt2 -layout br" # Notebook abnt2 BR keyboard
 ## --- Nix-Shell Wrapped commands  ---
 alias nyoom="shell python39 rnix-lsp -p 'python39.withPackages(ps: with ps; [ pynvim ])' --run nvim" # Run nyoom with python 3.9, rnix-lsp and pynvim installed
 
@@ -35,12 +39,9 @@ alias nyoom="shell python39 rnix-lsp -p 'python39.withPackages(ps: with ps; [ py
 
 MAIN_TMUX_SESSION="$(tmux ls | awk '{print substr($1, 1, length($1)-1)}')"
 if [[ -z $MAIN_TMUX_SESSION ]] then
-  /usr/bin/tmux new-session -s main;
+  tmux new-session -s main;
 fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Settings for kb 60% US to be able to type cedilla and accentuation
-setxkbmap -model abnt2 -layout us -variant intl
