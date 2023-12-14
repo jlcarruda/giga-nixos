@@ -7,12 +7,11 @@ from libqtile.lazy import lazy
 import scripts.hooks
 from scripts.variables import *
 from scripts.keybindings import keys, mouse
-from scripts.utils import get_net_dev
+from scripts.functions import get_net_dev
 
-# from qtile_extras import widget as extraWidgets
-
-# groups = [Group(i) for i in "123456789"]
-
+from qtile_extras import widget as extraWidgets
+from qtile_extras.popup.toolkit import (PopupImage, PopupRelativeLayout,PopupText, PopupWidget)
+from qtile_extras.widget.decorations import (BorderDecoration,PowerLineDecoration,RectDecoration)
 
 for i in range(len(group_names)):
     groups.append(
@@ -27,27 +26,22 @@ for i in range(len(group_names)):
 for i in groups:
     keys.extend(
         [
-            # mod1 + letter of group = switch to group
             Key(
                 [mod],
                 i.name,
                 lazy.group[i.name].toscreen(),
                 desc="Switch to group {}".format(i.name),
             ),
-            # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, "shift"],
                 i.name,
                 lazy.window.togroup(i.name, switch_group=True),
                 desc="Switch to & move focused window to group {}".format(i.name),
             ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod1 + shift + letter of group = move focused window to group
-            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            #     desc="move focused window to group {}".format(i.name)),
         ]
     )
 
+# TODO: Use Pywal to set colorscheme
 with open(home + '/.config/qtile/colors.json') as wal_import:
   data = json.load(wal_import)
 #   wallpaper = data['wallpaper']
@@ -108,9 +102,10 @@ screens = [
                     text="░▒▓",
                 ),
                 widget.CurrentLayoutIcon(),
-                widget.CurrentLayout(),
-                widget.Sep(
-                    padding=5
+                # widget.CurrentLayout(),
+                widget.Spacer(
+                    length=5,
+                    background=transparent,
                 ),
                 widget.GroupBox(
                     font=awesome_font,
@@ -135,6 +130,7 @@ screens = [
                 widget.Systray(),
                 widget.KeyboardLayout(),
                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.Battery(),
                 widget.QuickExit(),
                 widget.TextBox(
                     foreground=color[1],

@@ -9,7 +9,7 @@
 import os
 # from functions import screenshot
 from libqtile.command import lazy
-from libqtile.config import EzKey, EzDrag, EzClick
+from libqtile.config import Key, EzKey, EzDrag, EzClick
 
 @lazy.window.function
 def float_to_front(window):
@@ -70,7 +70,7 @@ windowFocus = [
     EzKey("A-j", lazy.layout.down(), desc="Move focus down"),
     EzKey("A-k", lazy.layout.up(), desc="Move focus up"),
     EzKey("A-g", lazy.window.toggle_fullscreen()),
-    EzKey("A-S", lazy.window.toggle_floating()),
+    EzKey("A-s", lazy.window.toggle_floating()),
 ]
 
 windowControl = [
