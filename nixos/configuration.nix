@@ -134,6 +134,8 @@ in {
 			wirelesstools
 			python3
 			pywal
+			protonvpn-gui
+			protonvpn-cli
 			(python3.withPackages(ps: with ps; [
 				pandas
 				requests
@@ -142,6 +144,7 @@ in {
 				#pacu	
 				python-ldap
 				pip
+				dnspython
 			]))
 		];
   };
